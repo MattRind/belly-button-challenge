@@ -124,8 +124,17 @@ function init() {
 
 // Function for event listener
 function optionChanged(newSample) {
-  // Build charts and metadata panel each time a new sample is selected
 
+  // Build charts and metadata panel each time a new sample is selected
+  //   since the drop down returns the value of the id (person), but the metadata panel and 
+  //   plots are based on the index of the sample, need to find corresponding index of value,
+  //   assuming order of names (ids) is same as order of ids in metadata and samples lists --
+  d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
+    let names = data['names'];
+    const index = names.indexOf(newSample);
+    buildMetadata(index);
+    buildCharts(index);
+  }); 
 }
 
 // Initialize the dashboard
