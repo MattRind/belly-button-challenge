@@ -21,7 +21,6 @@ function buildMetadata(sample) {
 
       let row = data_card.append("card-body");
       let field_name = Object.keys(one_metadata_set)[i].toUpperCase();
-      // let field_name = field_name.toUpperCase();
       let field_value = Object.values(one_metadata_set)[i];
       row.append('table').text(field_name + ":  " + field_value + "" );
     };
@@ -73,24 +72,31 @@ function buildCharts(sample) {
     // Render the Bubble Chart
     Plotly.newPlot('bubble', bubble_data, bubble_layout);
 
-
-
-
-
-
-
-
-
-
     // For the Bar Chart, map the otu_ids to a list of strings for your yticks
-
+    let slicedData = sample_values.slice(0, 10);
+    let slicedIds = otu_ids.slice(0, 10);
+    let id_labels = slicedIds.map(object => "OTU " + object + " ");
 
     // Build a Bar Chart
     // Don't forget to slice and reverse the input data appropriately
+    let trace2 = {
+      x: slicedData.map(object => object),
+      y: id_labels,
+      text: otu_labels,
+      type: "bar",
+      orientation: "h",
+    };
+   
+    let bar_data = [trace2];
 
+    let bar_layout = {
+      title: "Top Ten Bacterial Cultures Found",
+      hoverinfo : "none",
+      yaxis : {autorange :"reversed"}
+    };
 
     // Render the Bar Chart
-
+    Plotly.newPlot("bar", bar_data, bar_layout);
   });
 }
 
